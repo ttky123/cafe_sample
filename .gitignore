@@ -28,3 +28,12 @@ replay_pid*
 .gradle/8.5/dependencies-accessors/gc.properties
 .gradle/8.5/gc.properties
 gradle/wrapper/gradle-wrapper.properties
+.idea/.name
+.idea/compiler.xml
+.idea/jarRepositories.xml
+.idea/gradle.xml
+.idea/misc.xml
+.idea/vcs.xml
+*.gradle
+*.gradle
+build.gradle
