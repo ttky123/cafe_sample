@@ -27,3 +27,28 @@
 - 로그인하지 않은 사장님의 상품 관련 API에 대한 접근 제한 처리가 되어야 합니다.
 ------------------------
 # 구현 내용
+![image](https://github.com/ttky123/cafe_sample/assets/43338000/f912311b-50be-4a8a-8b43-b4ebdf766975)
+
+Spring Security + JWT Token을 이용한 api 접근제어
+
+![image](https://github.com/ttky123/cafe_sample/assets/43338000/d2be8713-f5d9-4cc0-9406-08daa04b390b)
+
+![image](https://github.com/ttky123/cafe_sample/assets/43338000/c4500708-b34a-45cf-9986-b47aa0bd033a)
+
+초성 검색을 위한 컬럼 추가, 등록 상품 조회를 위한 다대일 관계 매핑
+
+![image](https://github.com/ttky123/cafe_sample/assets/43338000/13264230-6329-4fc1-bdd7-f58a0f5dc47f)
+
+커서 기반 페이지네이션을 위해 QueryDsl 사용
+
+![image](https://github.com/ttky123/cafe_sample/assets/43338000/10ff31fb-19b1-4e0c-91d7-0c96f98caacf)
+
+login / logout을 위한 AuthConntroller
+
+![image](https://github.com/ttky123/cafe_sample/assets/43338000/50df3e93-16e2-4f6f-9422-ca4ac1cca7e4)
+
+JWT Token 관리를 위한 Redis사용
+
+![image](https://github.com/ttky123/cafe_sample/assets/43338000/28f90da2-a582-4c5f-937d-670fe71138a7)
+
+초성 기반 검색을 위한 추출 메소드 추가
