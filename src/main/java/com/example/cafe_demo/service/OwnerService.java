@@ -32,18 +32,12 @@ public class OwnerService {
         Owner owner = new Owner();
         owner.setPhoneNumber(phoneNumber);
         owner.setPassword(passwordEncoder.encode(password));
+        owner.setRole("ROLE_USER"); // 사용자 역할을 "USER"로 설정
         return ownerRepository.save(owner);
     }
 
-    public String login(String phoneNumber, String password) {
-        Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(phoneNumber, password));
-        SecurityContextHolder.getContext().setAuthentication(authentication);
-
-        return jwtTokenProvider.createToken(phoneNumber);
-    }
 
     public boolean isValidPhoneNumber(String phoneNumber) {
-        return phoneNumber.matches("^\\d{10,11}$"); // 대한민국의 휴대폰 번호 형식에 맞춤
+        return phoneNumber.matches("^\\d{10,11}$");
     }
 }

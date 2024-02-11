@@ -37,3 +37,8 @@ gradle/wrapper/gradle-wrapper.properties
 *.gradle
 *.gradle
 build.gradle
+gradlew
+gradlew.bat
+.idea/dataSources.xml
+.idea/sqldialects.xml
+.idea/uiDesigner.xml

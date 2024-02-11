@@ -1,26 +1,51 @@
 version: '3.8'
 services:
-  app:
-    build: .
+#  app:
+#    build: .
+#    ports:
+#      - "8080:8080"
+#    depends_on:
+#      - redis
+#      - db
+#    environment:
+#      SPRING_DATASOURCE_URL: jdbc:mysql://db:3306/cafedb?useSSL=false&serverTimezone=UTC
+#      SPRING_DATASOURCE_USERNAME: cafe
+#      SPRING_DATASOURCE_PASSWORD: 1234
+#      SPRING_REDIS_HOST: redis
+#      SPRING_REDIS_PORT: 6379
+  redis:
+    image: "redis:alpine"
     ports:
-      - "8080:8080"
-    depends_on:
-      - db
-    environment:
-      - SPRING_DATASOURCE_URL=jdbc:mysql://db:3306/mydb?useSSL=false
-      - SPRING_DATASOURCE_USERNAME=root
-      - SPRING_DATASOURCE_PASSWORD=secret
-      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+      - "6379:6379"
+#    networks:
+#      app_network:
+#        ipv4_address: 172.20.0.2
 
   db:
     image: "mysql:5.7"
+    platform: linux/amd64
+    restart: always
     environment:
-      MYSQL_ROOT_PASSWORD: secret
-      MYSQL_DATABASE: test
+      MYSQL_DATABASE: cafedb
+      MYSQL_ROOT_PASSWORD: 1234
+      MYSQL_USER: cafe
+      MYSQL_PASSWORD: 1234
+    command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
     ports:
-      - "3306:3306"
+      - "23306:3306"
     volumes:
-      - db-data:/var/lib/mysql
+      - dbdata:/var/lib/mysql
+      - ./schema.sql:/docker-entrypoint-initdb.d/schema.sql
+
+#networks:
+#  app_network:
+#    driver: bridge
+#    ipam:
+#      driver: default
+#      config:
+#        - subnet: 172.20.0.0/24
 
 volumes:
-  db-data:
+  dbdata:
+
+

@@ -19,5 +19,5 @@ public class OwnerController {
         return ownerService.registerOwner(owner.getPhoneNumber(), owner.getPassword());
     }
 
-    // 로그인 및 로그아웃 엔드포인트 구현 필요
+
 }

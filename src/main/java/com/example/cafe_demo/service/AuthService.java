@@ -25,10 +25,11 @@ public class AuthService {
     @Autowired
     private AuthenticationManager authenticationManager;
 
-    // 리프레시 토큰 저장소 - 실제 환경에서는 데이터베이스나 Redis 사용
-    private Map<String, String> refreshTokenStore = new ConcurrentHashMap<>();
+    @Autowired
+    private TokenStoreService tokenStoreService;
 
-    public String login(String phoneNumber, String password) {
+
+ /*   public String login(String phoneNumber, String password) {
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(phoneNumber, password));
         SecurityContextHolder.getContext().setAuthentication(authentication);
@@ -36,23 +37,34 @@ public class AuthService {
         Owner owner = ownerRepository.findByPhoneNumber(phoneNumber)
                 .orElseThrow(() -> new IllegalArgumentException("User not found with phone number: " + phoneNumber));
 
-        return jwtTokenProvider.createToken(phoneNumber, owner.getId()); // 예제에서는 Owner ID를 사용하는 버전으로 변경
-    }
+        return jwtTokenProvider.createToken(phoneNumber);
+    }*/
 
+    public Map<String, String> login(String phoneNumber, String password) {
+        Authentication authentication = authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(phoneNumber, password));
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+
+        Owner owner = ownerRepository.findByPhoneNumber(phoneNumber)
+                .orElseThrow(() -> new IllegalArgumentException("User not found with phone number: " + phoneNumber));
+
+        // 액세스 토큰 생성
+        String accessToken = jwtTokenProvider.createToken(phoneNumber);
+        // 리프레시 토큰 생성
+        String refreshToken = jwtTokenProvider.createRefreshToken(phoneNumber);
+        // 리프레시 토큰을 Redis에 저장
+        tokenStoreService.storeToken(phoneNumber, refreshToken, JwtTokenProvider.REFRESH_TOKEN_EXPIRE_TIME);
+
+        // 토큰 반환
+        Map<String, String> tokens = new HashMap<>();
+        tokens.put("accessToken", accessToken);
+        tokens.put("refreshToken", refreshToken);
+        return tokens;
+    }
 
     public void logout(String phoneNumber) {
-        // 리프레시 토큰 무효화
-        refreshTokenStore.remove(phoneNumber);
+        // Redis에서 리프레시 토큰 무효화
+        tokenStoreService.invalidateToken(phoneNumber);
     }
-    public String login(String phoneNumber, String password) {
-        Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(phoneNumber, password));
-        SecurityContextHolder.getContext().setAuthentication(authentication);
-
-        Owner owner = ownerRepository.findByPhoneNumber(phoneNumber)
-                .orElseThrow(() -> new IllegalArgumentException("User not found with phone number: " + phoneNumber));
-
-        return jwtTokenProvider.createToken(phoneNumber); // 예제에서는 Owner ID를 사용하는 버전으로 변경
-    }
-    // 로그아웃 요청 처리를 위한 메서드 등 추가 구현...
 }
+

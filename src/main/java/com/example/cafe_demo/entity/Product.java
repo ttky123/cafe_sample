@@ -1,6 +1,7 @@
 package com.example.cafe_demo.entity;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -10,7 +11,7 @@ import java.util.Date;
 @Data
 public class Product {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
     private String category;
@@ -21,8 +22,9 @@ public class Product {
     private String barcode;
     private Date expirationDate;
     private String size; // "small" or "large"
-
+    private String initialSound; // 초성 필드 추가
+    @JsonIgnore
     @ManyToOne
-    @JoinColumn(name = "created_by")
-    private Owner owner; // 상품을 생성한 사장님
+    @JoinColumn(name = "phone_number")
+    private Owner owner;
 }
